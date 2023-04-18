@@ -4,3 +4,5 @@ snsreview.csv
 session.json
 images/*
 video/*
+sessions/*
+my_venv/*
