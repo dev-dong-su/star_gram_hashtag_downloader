@@ -1,0 +1,82 @@
+[
+  {
+    "model": "SM-G935F",
+    "manufacturer": "Samsung",
+    "android_version": 24,
+    "android_release": "7.0",
+    "resolution": "1440x2560",
+    "dpi": "560dpi"
+  },
+  {
+    "model": "SM-G920F",
+    "manufacturer": "Samsung",
+    "android_version": 22,
+    "android_release": "5.1.1",
+    "resolution": "1440x2560",
+    "dpi": "560dpi"
+  },
+  {
+    "model": "SM-N950F",
+    "manufacturer": "Samsung",
+    "android_version": 28,
+    "android_release": "9.0",
+    "resolution": "1440x2960",
+    "dpi": "560dpi"
+  },
+  {
+    "model": "SM-G975F",
+    "manufacturer": "Samsung",
+    "android_version": 29,
+    "android_release": "10.0",
+    "resolution": "1440x3040",
+    "dpi": "560dpi"
+  },
+  {
+    "model": "SM-G973F",
+    "manufacturer": "Samsung",
+    "android_version": 29,
+    "android_release": "10.0",
+    "resolution": "1440x3040",
+    "dpi": "560dpi"
+  },
+  {
+    "model": "SM-A505F",
+    "manufacturer": "Samsung",
+    "android_version": 28,
+    "android_release": "9.0",
+    "resolution": "1080x2340",
+    "dpi": "420dpi"
+  },
+  {
+    "model": "SM-A750F",
+    "manufacturer": "Samsung",
+    "android_version": 26,
+    "android_release": "8.0",
+    "resolution": "1080x2220",
+    "dpi": "420dpi"
+  },
+  {
+    "model": "SM-G610F",
+    "manufacturer": "Samsung",
+    "android_version": 23,
+    "android_release": "6.0.1",
+    "resolution": "1080x1920",
+    "dpi": "420dpi"
+  },
+  {
+    "model": "SM-A520F",
+    "manufacturer": "Samsung",
+    "android_version": 24,
+    "android_release": "7.0",
+    "resolution": "1080x1920",
+    "dpi": "420dpi"
+  },
+  {
+    "model": "SM-J710F",
+    "manufacturer": "Samsung",
+    "android_version": 23,
+    "android_release": "6.0.1",
+    "resolution": "720x1280",
+    "dpi": "320dpi"
+  }
+]
