@@ -12,3 +12,4 @@ venv/*
 check.py
 tmp.json
 .vscode
+output.log

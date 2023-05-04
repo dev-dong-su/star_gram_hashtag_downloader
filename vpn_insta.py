@@ -12,6 +12,7 @@ from instagrapi.exceptions import (
     ClientConnectionError,
     ClientForbiddenError,
     ClientLoginRequired,
+    LoginRequired,
     ClientThrottledError,
     GenericRequestError,
     PleaseWaitFewMinutes,
@@ -23,8 +24,8 @@ import requests
 
 row_count = 1
 
-username = "alphasnstest2"
-password = "snstest2"
+username = "lofem10275"
+password = "snstest1"
 
 
 def login_user():
@@ -95,7 +96,7 @@ def pretreatment_data(posts, hashtag, shop):
     for post in posts:
         post_date = post.taken_at.date()
         days_diff = (current_date_utc - post_date).days
-        if days_diff <= 1:  # 오늘 이전으로 부터 1일 이내인지 확인
+        if days_diff <= 3:  # 오늘 이전으로 부터 1일 이내인지 확인
             logging.info(
                 f"- 게시물 ID: {post.id}, 캡션: {post.caption_text}, 업로드 날짜: {post_date}")
             caption_text_words = post.caption_text.split()
@@ -186,8 +187,11 @@ def save_posts_to_csv(posts, hashtag, shop, file_name="posts.csv"):
                 media_urls = ''
 
             formatted_date = post.taken_at.strftime("%Y-%m-%d %H:%M")
+            if type(media_urls) == list:
+                media_urls = ', '.join(media_urls)
+
             csv_writer.writerow([f'https://www.instagram.com/p/{post.code}', post.id,  post.user.username,
-                                post.caption_text, formatted_date, hashtag, post.like_count, post.comment_count, local_file_path])
+                                post.caption_text, formatted_date, hashtag, post.like_count, post.comment_count, media_urls])
         logging.info('✅ 저장 완료!')
 
 
@@ -207,13 +211,17 @@ def command_resualt(returncode):
             logging.info(f'⏲️ {sleep_duration}초 동안 대기합니다.')
         else:
             logging.error("VPN 연결에 실패했습니다.")
+            return False
     else:
         logging.error("VPN 연결에 실패했습니다.")
+        return False
 
 
 if __name__ == "__main__":
     logging.basicConfig(filename='output.log', filemode='a', level=logging.INFO,
                         format='%(asctime)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+
+    # returncode = run_command("nordvpn connect")
 
     logging.info('🥔 로그인을 시도합니다.')
     client = login_user()
@@ -221,56 +229,67 @@ if __name__ == "__main__":
 
     request_count = 0
 
-    # posts = search_posts_by_hashtag(client, "5265830a")
-    # save_posts_to_csv(posts=posts, hashtag="5265830a",
-    #                   shop='romistory_com', file_name=f"snsreview.csv")
+    posts = search_posts_by_hashtag(client, "40d08")
+    save_posts_to_csv(posts=posts, hashtag="40d08",
+                      shop='tounou.official', file_name=f"snsreview.csv")
 
-    with open("./hashtag_shop.csv", "r", encoding='utf-8') as csvfile:
-        csv_reader = csv.reader(csvfile)
-        start_line = 11
-        row_count = start_line
+    # with open("./hashtag_shop.csv", "r", encoding='utf-8') as csvfile:
+    #     csv_reader = csv.reader(csvfile)
+    #     start_line = 19
+    #     row_count = start_line
 
-        for line_number, row in enumerate(csv_reader, start=1):
-            if line_number <= start_line:
-                continue
+    #     for line_number, row in enumerate(csv_reader, start=1):
+    #         if line_number <= start_line:
+    #             continue
 
-            hashtag = row[0]
-            shop = row[1]
-            logging.info(f'🔎 해시태그 처리 시작: {hashtag}')
-            try:
-                if request_count == 30:
-                    sleep_duration = random.randint(180, 300)
-                    logging.info(f'⏲️ {sleep_duration}초 동안 대기합니다.')
+    #         hashtag = row[0]
+    #         shop = row[1]
+    #         logging.info(f'🔎 해시태그 처리 시작: {hashtag}')
+    #         try:
+    #             if request_count == 30:
+    #                 sleep_duration = random.randint(180, 300)
+    #                 logging.info(f'⏲️ {sleep_duration}초 동안 대기합니다.')
 
-                posts = search_posts_by_hashtag(client, hashtag)
-                save_posts_to_csv(posts=posts, shop=shop,
-                                  hashtag=hashtag, file_name=f"snsreview.csv")
+    #             posts = search_posts_by_hashtag(client, hashtag)
+    #             save_posts_to_csv(posts=posts, shop=shop,
+    #                               hashtag=hashtag, file_name=f"snsreview.csv")
 
-                request_count += 1
-                sleep_duration = random.randint(100, 300)
-                logging.info(f'⏲️ {sleep_duration}초 동안 대기합니다.')
-                time.sleep(sleep_duration)
+    #             request_count += 1
+    #             sleep_duration = random.randint(100, 250)
+    #             logging.info(f'⏲️ {sleep_duration}초 동안 대기합니다.')
+    #             time.sleep(sleep_duration)
 
-            except (ProxyError, HTTPError, GenericRequestError, ClientConnectionError):
-                # Network level
-                logging.error('🚨 Network level Error vpn을 재연결 합니다.')
-                returncode = run_command("nordvpn disconnect")
-                command_resualt(returncode)
+    #         except (ProxyError, HTTPError, GenericRequestError, ClientConnectionError):
+    #             # Network level
+    #             logging.error('🚨 Network level Error vpn을 재연결 합니다.')
+    #             returncode = run_command("nordvpn disconnect")
+    #             if not command_resualt(returncode):
+    #                 break
 
-            except (SentryBlock, RateLimitError, ClientThrottledError):
-                # Instagram limit level
-                logging.error('🚨 Instagram limit level Error vpn을 재연결 합니다.')
-                returncode = run_command("nordvpn disconnect")
-                command_resualt(returncode)
+    #         except (SentryBlock, RateLimitError, ClientThrottledError):
+    #             # Instagram limit level
+    #             logging.error('🚨 Instagram limit level Error vpn을 재연결 합니다.')
+    #             returncode = run_command("nordvpn disconnect")
+    #             if not command_resualt(returncode):
+    #                 break
 
-            except (ClientLoginRequired, PleaseWaitFewMinutes, ClientForbiddenError):
-                # Logical level
-                logging.error('🚨 Logical level Error vpn을 재연결 합니다.')
-                returncode = run_command("nordvpn disconnect")
-                command_resualt(returncode)
+    #         except (ClientLoginRequired, PleaseWaitFewMinutes, ClientForbiddenError):
+    #             # Logical level
+    #             logging.error('🚨 Logical level Error vpn을 재연결 합니다.')
+    #             returncode = run_command("nordvpn disconnect")
+    #             if not command_resualt(returncode):
+    #                 break
 
-            except Exception as e:
-                logging.error('🚨 Callange Error 계정이 차단당했습니다.')
+    #         except LoginRequired:
+    #             logging.error('🚨 session에서 로그아웃 되었습니다. 재 로그인을 시도합니다.')
+    #             client.relogin()
+    #             client.dump_settings('./sessions/{username}.json')
 
-        logging.info(f'🔎 해시태그 처리 완료 파일 명: ./hashtag_shop.csv"')
-        returncode = run_command("nordvpn disconnect")
+    #         except Exception as e:
+    #             logging.error(
+    #                 f'🚨 Callange Error 계정이 차단당했거나 에러가 터졌습니다. error:{e}')
+    #             returncode = run_command("nordvpn disconnect")
+    #             break
+
+    #     logging.info(f'🔎 해시태그 처리 완료 파일 명: ./hashtag_shop.csv"')
+    #     returncode = run_command("nordvpn disconnect")
